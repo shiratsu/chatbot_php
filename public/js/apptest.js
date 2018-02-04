@@ -17,15 +17,6 @@ window.Vue = require('vue');
 
 Vue.component('botman-tinker', require('./components/BotManTinker.vue'));
 
-const axios = require('axios');
-const API_ENDPOINT = '/botman';
-const API_ENDPOINT_INIT = '/botman/init';
-
 const app = new Vue({
     el: '#app'
 });
-
-window.onload = function(){
-  console.log("compile");
-};
-

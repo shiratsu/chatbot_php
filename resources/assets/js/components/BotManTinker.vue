@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div onload="initMessages();">
         <div class="arrow"></div>
         <ul class="ChatLog">
             <li class="ChatLog__entry" v-for="message in messages" :class="{'ChatLog__entry_mine': message.isMine}">
@@ -101,8 +101,14 @@
 </style>
 
 <script>
+
+    console.log("compile2");
+
     const axios = require('axios');
     const API_ENDPOINT = '/botman';
+    const API_ENDPOINT_INIT = '/botman/init';
+
+    var aryMessages = loadItems();
 
     export default {
         data() {
@@ -147,4 +153,30 @@
             }
         }
     }
+
+
+
+    function loadItems(){
+        var aryMessages = [];
+
+        axios.post(API_ENDPOINT_INIT, {
+            driver: 'web',
+            userId: 9999999,
+            message: ''
+        }).then(response => {
+            let messages = response.data.messages || [];
+            messages.forEach(msg => {
+                aryMessages.push({
+                    'isMine': false,
+                    'user': '🤖',
+                    'text': msg,
+                    'attachment': {},
+                });
+            });
+        });
+        console.log(aryMessages);
+        return aryMessages;
+    };
+
+
 </script>

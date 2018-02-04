@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use BotMan\BotMan\BotMan;
 use Illuminate\Http\Request;
 use App\Conversations\ExampleConversation;
+use Illuminate\Support\Facades\Log;
+use Mockery\Exception;
 
 class BotManController extends Controller
 {
@@ -13,16 +15,27 @@ class BotManController extends Controller
      */
     public function handle()
     {
+
         $botman = app('botman');
 
         $botman->hears('Hello', function ($bot) {
-            $bot->reply('Hello! Shunsuke');
-        });
-        $botman->hears('How are you?', function ($bot) {
-            $bot->reply("I'm fine.");
+
+            $this->startConversation($bot);
         });
 
         $botman->listen();
+
+    }
+
+    /**
+     * 初期ロードと同じタイミングで呼ばれる
+     */
+    public function init(){
+        Log::debug("test4");
+        $botman = app('botman');
+        $botman->say('Hi! I am bot man!', '99999');
+        $botman->listen();
+
     }
 
     /**
@@ -30,6 +43,8 @@ class BotManController extends Controller
      */
     public function tinker()
     {
+        Log::debug("test");
+
         return view('tinker');
     }
 
