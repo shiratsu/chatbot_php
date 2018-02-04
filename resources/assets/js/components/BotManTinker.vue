@@ -113,7 +113,7 @@
     export default {
         data() {
             return {
-                messages: [],
+                messages: aryMessages,
                 newMessage: null
             };
         },
@@ -169,7 +169,7 @@
                 aryMessages.push({
                     'isMine': false,
                     'user': '🤖',
-                    'text': msg,
+                    'text': msg.text,
                     'attachment': {},
                 });
             });

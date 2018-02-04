@@ -1957,7 +1957,7 @@ var aryMessages = loadItems();
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
-            messages: [],
+            messages: aryMessages,
             newMessage: null
         };
     },
@@ -2011,7 +2011,7 @@ function loadItems() {
             aryMessages.push({
                 'isMine': false,
                 'user': '🤖',
-                'text': msg,
+                'text': msg.text,
                 'attachment': {}
             });
         });
