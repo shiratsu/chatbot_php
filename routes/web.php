@@ -18,3 +18,6 @@ Route::get('/', function () {
 Route::match(['get', 'post'], '/botman', 'BotManController@handle');
 Route::get('/botman/tinker', 'BotManController@tinker');
 Route::post('/botman/init', 'BotManController@init');
+Route::match(['get', 'post'], '/shot', 'ShotController@handle');
+Route::get('/shot/tinker', 'ShotController@tinker');
+Route::match(['get', 'post'],'/shot/init', 'ShotController@init');

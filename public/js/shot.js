@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 52);
+/******/ 	return __webpack_require__(__webpack_require__.s = 53);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -43185,7 +43185,8 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 39 */
+/* 39 */,
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
@@ -43205,29 +43206,22 @@ window.Vue = __webpack_require__(37);
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('botman-tinker', __webpack_require__(46));
-
-var axios = __webpack_require__(3);
-var API_ENDPOINT = '/botman';
-var API_ENDPOINT_INIT = '/botman/init';
+Vue.component('shot-tinker', __webpack_require__(47));
 
 var app = new Vue({
   el: '#app'
 });
+
+console.log("compil2");
 
 window.onload = function () {
   console.log("compile");
 };
 
 /***/ }),
-/* 40 */,
-/* 41 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 42 */
+/* 41 */,
+/* 42 */,
+/* 43 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -43339,8 +43333,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 console.log("compile2");
 
 var axios = __webpack_require__(3);
-var API_ENDPOINT = '/botman';
-var API_ENDPOINT_INIT = '/botman/init';
+var API_ENDPOINT = '/shot';
+var API_ENDPOINT_INIT = '/shot/init';
 
 var aryMessages = loadItems();
 
@@ -43411,35 +43405,35 @@ function loadItems() {
 };
 
 /***/ }),
-/* 43 */,
-/* 44 */,
-/* 45 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(29)();
 exports.push([module.i, "\ninput.ChatInput {\n    width: 300px;\n    height: 25px;\n    border-radius: 5px;\n    border: none;\n    padding: 10px;\n}\nul.ChatLog {\n    list-style: none;\n}\n.ChatLog {\n    max-width: 20em;\n    margin: 0 auto;\n}\n.ChatLog .ChatLog__entry {\n    margin: .5em;\n}\n.ChatLog__entry {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: row;\n            flex-direction: row;\n    -webkit-box-align: end;\n        -ms-flex-align: end;\n            align-items: flex-end;\n    max-width: 100%;\n}\n.ChatLog__entry.ChatLog__entry_mine {\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: reverse;\n        -ms-flex-direction: row-reverse;\n            flex-direction: row-reverse;\n}\n.ChatLog__avatar {\n    -ms-flex-negative: 0;\n        flex-shrink: 0;\n    -webkit-box-flex: 0;\n        -ms-flex-positive: 0;\n            flex-grow: 0;\n    z-index: 1;\n    height: 50px;\n    width: 50px;\n    border-radius: 25px;\n}\n.ChatLog__entry.ChatLog__entry_mine\n.ChatLog__avatar {\n    display: none;\n}\n.ChatLog__entry .ChatLog__message {\n    position: relative;\n    margin: 0 12px;\n}\n.ChatLog__entry .ChatLog__message::before {\n    position: absolute;\n    right: auto;\n    bottom: .6em;\n    left: -12px;\n    height: 0;\n    content: '';\n    border: 6px solid transparent;\n    border-right-color: #ddd;\n    z-index: 2;\n}\n.ChatLog__entry.ChatLog__entry_mine .ChatLog__message::before {\n    right: -12px;\n    bottom: .6em;\n    left: auto;\n    border: 6px solid transparent;\n    border-left-color: #08f;\n}\n.ChatLog__message {\n    background-color: #ddd;\n    padding: .5em;\n    border-radius: 4px;\n    font-weight: lighter;\n    max-width: 70%;\n}\n.ChatLog__entry.ChatLog__entry_mine .ChatLog__message {\n    border-top: 1px solid #07f;\n    border-bottom: 1px solid #07f;\n    background-color: #08f;\n    color: #fff;\n}\n", ""]);
 
 /***/ }),
-/* 46 */
+/* 45 */,
+/* 46 */,
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(51)
+__webpack_require__(50)
 
 var Component = __webpack_require__(34)(
   /* script */
-  __webpack_require__(42),
+  __webpack_require__(43),
   /* template */
-  __webpack_require__(49),
+  __webpack_require__(48),
   /* scopeId */
   null,
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/hiratsukashu/botman_hiratsuka/resources/assets/js/components/BotManTinker.vue"
+Component.options.__file = "/Users/hiratsukashu/botman_hiratsuka/resources/assets/js/components/ShotTinker.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] BotManTinker.vue: functional components are not supported with templates, they should use render functions.")}
+if (Component.options.functional) {console.error("[vue-loader] ShotTinker.vue: functional components are not supported with templates, they should use render functions.")}
 
 /* hot reload */
 if (false) {(function () {
@@ -43448,9 +43442,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-6758e7d4", Component.options)
+    hotAPI.createRecord("data-v-650d973d", Component.options)
   } else {
-    hotAPI.reload("data-v-6758e7d4", Component.options)
+    hotAPI.reload("data-v-650d973d", Component.options)
   }
 })()}
 
@@ -43458,9 +43452,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 47 */,
-/* 48 */,
-/* 49 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -43517,29 +43509,29 @@ module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-6758e7d4", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-650d973d", module.exports)
   }
 }
 
 /***/ }),
-/* 50 */,
-/* 51 */
+/* 49 */,
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(45);
+var content = __webpack_require__(44);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(35)("41786482", content, false);
+var update = __webpack_require__(35)("6a759dbf", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-6758e7d4\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./BotManTinker.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-6758e7d4\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./BotManTinker.vue");
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-650d973d\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ShotTinker.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-650d973d\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ShotTinker.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -43549,11 +43541,12 @@ if(false) {
 }
 
 /***/ }),
-/* 52 */
+/* 51 */,
+/* 52 */,
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(39);
-module.exports = __webpack_require__(41);
+module.exports = __webpack_require__(40);
 
 
 /***/ })
