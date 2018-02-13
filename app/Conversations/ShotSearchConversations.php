@@ -14,17 +14,18 @@ use BotMan\BotMan\Messages\Outgoing\Question;
 use BotMan\BotMan\Messages\Outgoing\Actions\Button;
 use BotMan\BotMan\Messages\Conversations\Conversation;
 use Illuminate\Support\Facades\Log;
-use App\Lib\ShotHttpClient;
+use App\Util\ShotHttpClient;
 
 class ShotSearchConversations extends Conversation
 {
 
-    //抜き出したい固有表現
-    private $_aryNamedEntity = ['LOC','MONEY_UNIT','MONEY','JOB','DATE'];
     private $_objHttp = null;
 
-    public function __construct() {
-        parent::__construct();
+    private $_strConversationId = null;
+
+    public function __construct(string $strId = null) {
+        $this->_strConversationId = $strId;
+//        parent::__construct();
         $this->_objHttp = new ShotHttpClient();
 
     }
@@ -46,15 +47,60 @@ class ShotSearchConversations extends Conversation
 
         Log::debug($this->bot->getMessage()->getText());
 
-        $param = $this->_objHttp->makeParam();
+        $param = $this->_objHttp->makeParamNER($this->bot->getMessage()->getText(),'LOC',$this->_strConversationId);
 
-        $this->ask($this->bot->getMessage()->getText(), function(Answer $answer) {
+        $response = $this->_objHttp->postRequest($param,env('LANGUAGE_ANALYSIS_URL').'/shot');
+
+        // nullなら失敗
+        if($response == null){
+            $this->_askAgain();
+        }
+
+        // 200じゃないなら
+        if($response->getStatusCode() != "200"){
+            $this->_askAgain();
+        }
+
+        Log::info($response->getBody()->getContents());
+        Log::info(json_decode($response->getBody(),true));
+
+        // デコード
+        $objContent = json_decode($response->getBody(), true);
+
+        Log::info($objContent);
+
+
+        $strMessage = null;
+        $strMessage = $objContent['sentence'];
+        if(!empty($strMessage)){
+            $this->_askJob($strMessage);
+        }
+
+    }
+
+    /**
+     * 職種を聞く
+     * @param string $strMessage
+     */
+    private function _askJob(string $strMessage){
+
+        $this->ask($strMessage, function(Answer $answer) {
+
+        });
+    }
+
+    /**
+     * もう一度問い合わせる場合に使う。
+     */
+    private function _askAgain(){
+        $this->ask('すみません、通信エラーが発生しました。もう一度お願いします。', function(Answer $answer) {
 //            // Save result
 //            $this->firstname = $answer->getText();
 //
 //            $this->say('Nice to meet you '.$this->firstname);
 //            $this->askEmail();
         });
-
     }
+
+
 }

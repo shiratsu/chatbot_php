@@ -129,6 +129,8 @@
             },
 
             sendMessage() {
+                let conversation_id = $('#conversation_id').val();
+                console.log(conversation_id);
                 let messageText = this.newMessage;
                 this.newMessage = '';
                 if (messageText === 'clear') {
@@ -138,7 +140,7 @@
 
                 this._addMessage(messageText, null, true);
 
-                axios.post(API_ENDPOINT, {
+                axios.post(API_ENDPOINT+'?conversation_id='+conversation_id, {
                     driver: 'web',
                     userId: 9999999,
                     message: messageText
@@ -155,11 +157,28 @@
     }
 
 
+    // Read a page's GET URL variables and return them as an associative array.
+    function getUrlVars()
+    {
+        var vars = [], hash;
+        var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+        for(var i = 0; i < hashes.length; i++)
+        {
+            hash = hashes[i].split('=');
+            vars.push(hash[0]);
+            vars[hash[0]] = hash[1];
+        }
+        return vars;
+    }
+
 
     function loadItems(){
         var aryMessages = [];
+        console.log(getUrlVars());
 
-        axios.post(API_ENDPOINT_INIT, {
+        var workid = getUrlVars()["workid"];
+
+        axios.post(API_ENDPOINT_INIT+'?workid='+workid, {
             driver: 'web',
             userId: 9999999,
             message: ''

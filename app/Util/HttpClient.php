@@ -6,7 +6,7 @@
  * Time: 18:44
  */
 
-namespace App\Lib;
+namespace App\Util;
 
 use GuzzleHttp;
 use App\Util\HttpClientInterface;
@@ -49,7 +49,7 @@ abstract class HttpClient implements HttpClientInterface
                 $strUrl,
                 [
 
-                    'body' => $param
+                    'form_params' => $param
                 ]
             );
         } catch(\Exception $e) {

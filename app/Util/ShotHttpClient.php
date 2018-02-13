@@ -6,11 +6,11 @@
  * Time: 13:00
  */
 
-namespace App\Lib;
-use App\Lib\HttpClient;
+namespace App\Util;
+use App\Util\HttpClient;
 use Illuminate\Http\Request;
 
-class ShotHttpClient extends HttpClient
+final class ShotHttpClient extends HttpClient
 {
 
     /**
@@ -32,11 +32,12 @@ class ShotHttpClient extends HttpClient
      * @param array $
      * @return mixed
      */
-    public function makeParamNER(string $sentence,array $aryNER) : array{
+    public function makeParamNER(string $sentence,string $strWhatAsk,string $conversationId) : array{
 
         $param = [];
+        $param['conversation_id'] = $conversationId;
         $param['sentence'] = $sentence;
-        $param['ner'] = $aryNER;
+        $param['what_ask'] = $strWhatAsk;
 
         return $param;
     }

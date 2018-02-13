@@ -11,17 +11,29 @@ use Mockery\Exception;
 class ShotController extends Controller
 {
 
+    private $_strConversationId = null;
+
     /**
      * Place your BotMan logic here.
      */
-    public function handle()
+    public function handle(Request $request)
     {
+
+        Log::debug('------------conversation_id-----------------');
+        Log::debug($request->get('conversation_id'));
+
+        $this->_strConversationId = $request->get('conversation_id');
 
         $botman = app('botman');
 
-        $botman->hears('.*', function ($bot) {
-            $bot->startConversation(new ShotSearchConversations());
-        });
+        if(!empty($this->_strConversationId)){
+            $botman->hears('.*', function ($bot) {
+                $bot->startConversation(new ShotSearchConversations($this->_strConversationId));
+            });
+        }else{
+            $botman->say('不正アクセスのため処理を中断します。',$botman->getUser()->getId());
+        }
+
 
         $botman->listen();
 
@@ -30,11 +42,16 @@ class ShotController extends Controller
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function tinker()
+    public function tinker(Request $request)
     {
         Log::debug("test");
 
-        return view('shot');
+        $param = [];
+        $param['strConversationId'] = $this->_makeStrConverSationId($request);
+
+        $this->_makeStrConverSationId($request);
+
+        return view('shot',$param);
     }
 
     /**
@@ -50,13 +67,18 @@ class ShotController extends Controller
         $botman->listen();
     }
 
+
     /**
-     * Loaded through routes/botman.php
-     * @param  BotMan $bot
-     * @param  string $sentence
+     * 会話IDを作成
+     * @param Request $request
+     * @return string
      */
-    public function startConversation(BotMan $bot,string $sentence)
-    {
-        $bot->startConversation(new ShotSearchConversations());
+    private function _makeStrConverSationId(Request $request) : ?string{
+
+        // TODO: もうちょっと何とかする。さらに時間を加えるとか。
+//        $strConversationId = '';
+        $strWorkId = $request->get('workid');
+        $strConversationId = $strWorkId;
+        return $strConversationId;
     }
 }

@@ -35,6 +35,7 @@
 <div class="container">
     <div class="content" id="app">
         <shot-tinker></shot-tinker>
+        <input type="hidden" id="conversation_id" name="conversation_id" value="{{ $strConversationId }}"/>
     </div>
 </div>
 
