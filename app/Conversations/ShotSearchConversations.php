@@ -27,8 +27,7 @@ class ShotSearchConversations extends Conversation
 
     public function __construct(string $strId = null) {
         $this->_strConversationId = $strId;
-//        parent::__construct();
-        $this->_objHttp = new ShotHttpClient();
+
 
     }
 
@@ -47,6 +46,8 @@ class ShotSearchConversations extends Conversation
      */
     public function askWantLocation(){
 
+        Log::debug("askWantLocation");
+
         $response = $this->_callChatAPI($this->bot->getMessage()->getText(),$this->_strConversationId,'LOC');
 
         if ($this->_checkAnswer($response)){
@@ -64,7 +65,7 @@ class ShotSearchConversations extends Conversation
             if(!empty($strMessage) && !empty($strWhatAsk)){
 
                 if($strWhatAsk == 'JOB'){
-                    $this->_askJob($strMessage);
+                    $this->_askJob($strMessage,$this->_strConversationId);
                 }else{
                     // 確認をする
                 }
@@ -77,11 +78,22 @@ class ShotSearchConversations extends Conversation
     /**
      * 言語解析＋文言作成のAPIを叩く
      * @param string $text
-     * @param string $strConversationId
-     * @param string $strWhatAsk
+     * @param string|null $strConversationId
+     * @param string|null $strWhatAsk
+     * @return Response|null
      */
-    private function _callChatAPI(string $text,string $strConversationId,string $strWhatAsk) : ?Response
+    private function _callChatAPI(string $text,string $strConversationId = null,string $strWhatAsk = null) : ?Response
     {
+        Log::info("--------------------------_callChatAPI");
+        Log::info($text);
+        Log::info($strConversationId);
+        Log::info($strWhatAsk);
+
+        $this->_objHttp = new ShotHttpClient();
+
+        if($text == null || $strConversationId == null || $strWhatAsk == null){
+            return null;
+        }
         $param = $this->_objHttp->makeParamNER($text,$strWhatAsk,$strConversationId);
 
         $response = $this->_objHttp->postRequest($param,env('LANGUAGE_ANALYSIS_URL').'/shot');
@@ -92,13 +104,64 @@ class ShotSearchConversations extends Conversation
     /**
      * 職種を聞く
      * @param string $strMessage
+     * @param string $strConversationId
      */
-    private function _askJob(string $strMessage){
+    private function _askJob(string $strMessage,string $strConversationId){
 
-        $this->ask($strMessage, function(Answer $answer) use ($strMessage) {
+        Log::info("_askJob");
+        Log::info($strMessage);
+
+        $this->ask($strMessage, function(Answer $answer) use ($strConversationId) {
             $strAnswer = $answer->getText();
 
-            $response = $this->_callChatAPI($strAnswer,$this->_strConversationId,'JOB');
+            Log::info($strAnswer);
+            Log::info($strConversationId);
+
+            if(empty($strAnswer)){
+                $this->_askJob('空文字です。再度お願いします。',$strConversationId);
+                return $this;
+            }
+
+
+
+            $response = $this->_callChatAPI($strAnswer,$strConversationId,'JOB');
+
+
+            if ($this->_checkAnswer($response)){
+                Log::info(json_decode($response->getBody(),true));
+
+                // デコード
+                $objContent = json_decode($response->getBody(), true);
+
+                Log::info($objContent);
+
+
+                $strMessage = null;
+                $strMessage = $objContent['sentence'];
+                $strWhatAsk = $objContent['what_ask'];
+                if(!empty($strMessage) && !empty($strWhatAsk)){
+
+                    if($strWhatAsk == 'MONEY'){
+                        $this->_askMoney($strMessage,$strConversationId);
+                    }else{
+                        // 確認をする
+                    }
+
+                }
+            }
+        });
+    }
+
+    /**
+     * 給与に関して聞く
+     * @param $strMessage
+     */
+    private function _askMoney(string $strMessage,string $strConversationId){
+
+        Log::info("_askJob");
+
+
+        $this->ask($strMessage, function(Answer $answer) use ($strConversationId) {
 
         });
     }
@@ -121,7 +184,7 @@ class ShotSearchConversations extends Conversation
     /**
      * @param ResponseInterface $response
      */
-    private function _checkAnswer(Response $response): bool{
+    private function _checkAnswer(Response $response = null): bool{
 
         // nullなら失敗
         if($response == null){
