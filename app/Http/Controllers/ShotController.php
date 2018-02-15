@@ -8,6 +8,7 @@ use App\Conversations\ShotSearchConversations;
 use Illuminate\Support\Facades\Log;
 use Mockery\Exception;
 
+
 class ShotController extends Controller
 {
 
@@ -36,6 +37,8 @@ class ShotController extends Controller
 
 
         $botman->listen();
+
+
 
     }
 

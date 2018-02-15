@@ -13,8 +13,8 @@ class ResetPasswordController extends Controller
     |--------------------------------------------------------------------------
     |
     | This controller is responsible for handling password reset requests
-    | and uses a simple Trait to include this behavior. You're free to
-    | explore this Trait and override any methods you wish to tweak.
+    | and uses a simple ConversationTrait to include this behavior. You're free to
+    | explore this ConversationTrait and override any methods you wish to tweak.
     |
     */
 
