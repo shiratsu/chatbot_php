@@ -43368,6 +43368,10 @@ var aryMessages = loadItems();
                 return;
             }
 
+            if (messageText == '') {
+                return;
+            }
+
             this._addMessage(messageText, null, true);
 
             axios.post(API_ENDPOINT + '?conversation_id=' + conversation_id, {

@@ -48,6 +48,10 @@ class ShotSearchConversations extends Conversation
 
         Log::debug("askWantLocation");
 
+        if(empty($this->bot->getMessage()->getText())){
+           return;
+        }
+
         $response = $this->_callChatAPI($this->bot->getMessage()->getText(),$this->_strConversationId,'LOC');
 
         $this->_afterApiCall($response,$this->_strConversationId,'JOB','_askJob');
@@ -98,13 +102,13 @@ class ShotSearchConversations extends Conversation
             Log::info($strConversationId);
 
             if(empty($strAnswer)){
-                $this->_askJob('空文字です。再度お願いします。',$strConversationId);
+                $this->_askJob('わからなかったよ。もう一度！',$strConversationId);
                 return $this;
             }
 
             $response = $this->_callChatAPI($strAnswer,$strConversationId,'JOB');
 
-            $this->_afterApiCall($response,$strConversationId,'MONEY','_askMoney');
+            $this->_afterApiCall($response,$strConversationId,'MONEY','_askMoney','_askJob');
 
 
         });
@@ -119,8 +123,10 @@ class ShotSearchConversations extends Conversation
         Log::info("_askMoney");
 
         $this->ask($strMessage, function(Answer $answer) use ($strConversationId) {
+            $strAnswer = $answer->getText();
+
             if(empty($strAnswer)){
-                $this->_askMoney('空文字です。再度お願いします。',$strConversationId);
+                $this->_askMoney('わからなかったよ。もう一度！',$strConversationId);
                 return $this;
             }
 
@@ -169,6 +175,8 @@ class ShotSearchConversations extends Conversation
                 // 確認をする
             }
 
+        }else{
+            $this->$opsiteMethod('ごめん、よくわからなかったので、もう一度！',$strConversationId);
         }
     }
 

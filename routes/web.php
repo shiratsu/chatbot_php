@@ -21,3 +21,6 @@ Route::post('/botman/init', 'BotManController@init');
 Route::match(['get', 'post'], '/shot', 'ShotController@handle');
 Route::get('/shot/tinker', 'ShotController@tinker');
 Route::match(['get', 'post'],'/shot/init', 'ShotController@init');
+Route::match(['get', 'post'], '/sample', 'SampleController@handle');
+Route::get('/sample/tinker', 'SampleController@tinker');
+Route::match(['get', 'post'],'/sample/init', 'SampleController@init');

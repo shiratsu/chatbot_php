@@ -28,7 +28,9 @@ class ShotController extends Controller
         $botman = app('botman');
 
         if(!empty($this->_strConversationId)){
-            $botman->hears('.*', function ($bot) {
+
+            // 空文字はスルー
+            $botman->hears('.+', function ($bot) {
                 $bot->startConversation(new ShotSearchConversations($this->_strConversationId));
             });
         }else{
