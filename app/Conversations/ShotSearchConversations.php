@@ -148,6 +148,11 @@ class ShotSearchConversations extends Conversation
 
         $this->ask($strMessage, function(Answer $answer) use ($strConversationId) {
 
+            $strAnswer = $answer->getText();
+
+            $response = $this->_callChatAPI($strAnswer,$strConversationId,'CONFIRM');
+
+            $this->_afterApiCall($response,$strConversationId,'SEARCH','_askConfirm','_askConfirm');
 
         });
     }
@@ -189,6 +194,7 @@ class ShotSearchConversations extends Conversation
                 $this->$method($strMessage,$strConversationId);
             }else{
                 // 確認をする
+                $this->$opsiteMethod('ごめん、よくわからなかったので、もう一度！',$strConversationId);
             }
 
         }else{
