@@ -90,6 +90,8 @@
         border-radius: 4px;
         font-weight: lighter;
         max-width: 70%;
+        white-space: pre-wrap;
+        word-wrap:break-word;
     }
 
     .ChatLog__entry.ChatLog__entry_mine .ChatLog__message {
@@ -98,6 +100,7 @@
         background-color: #08f;
         color: #fff;
     }
+
 </style>
 
 <script>

@@ -115,8 +115,9 @@ class ShotSearchConversations extends Conversation
     }
 
     /**
-     * 給与に関して聞く
-     * @param $strMessage
+     * 給与について聞く
+     * @param string $strMessage
+     * @param string $strConversationId
      */
     private function _askMoney(string $strMessage,string $strConversationId){
 
@@ -130,12 +131,27 @@ class ShotSearchConversations extends Conversation
                 return $this;
             }
 
-            $response = $this->_callChatAPI($strAnswer,$strConversationId,'JOB');
+            $response = $this->_callChatAPI($strAnswer,$strConversationId,'MONEY');
 
+            $this->_afterApiCall($response,$strConversationId,'CONFIRM','_askConfirm','_askMoney');
+
+        });
+    }
+
+    /**
+     * もらった情報の確認
+     * @param string $strMessage
+     * @param string $strConversationId
+     */
+    private function _askConfirm(string $strMessage,string $strConversationId){
+        Log::info("_askConfirm");
+
+        $this->ask($strMessage, function(Answer $answer) use ($strConversationId) {
 
 
         });
     }
+
 
     /**
      * APIをコールされた後の処理
