@@ -54,7 +54,7 @@ class ShotSearchConversations extends Conversation
 
         $response = $this->_callChatAPI($this->bot->getMessage()->getText(),$this->_strConversationId,'LOC');
 
-        $this->_afterApiCall($response,$this->_strConversationId,'JOB','_askJob');
+        $this->_afterApiCall($response,$this->_strConversationId);
 
 
     }
@@ -86,76 +86,105 @@ class ShotSearchConversations extends Conversation
     }
 
     /**
-     * 職種を聞く
+     * なにかを聞く
      * @param string $strMessage
      * @param string $strConversationId
      */
-    private function _askJob(string $strMessage,string $strConversationId){
+    private function _askSomething(string $strMessage,string $strConversationId,string $strWhatAsk){
 
         Log::info("_askJob");
         Log::info($strMessage);
 
-        $this->ask($strMessage, function(Answer $answer) use ($strMessage,$strConversationId) {
+        $this->ask($strMessage, function(Answer $answer) use ($strMessage,$strConversationId,$strWhatAsk) {
             $strAnswer = $answer->getText();
 
             Log::info($strAnswer);
             Log::info($strConversationId);
 
             if(empty($strAnswer)){
-                $this->_askJob('わからなかったよ。もう一度！',$strConversationId);
+                $this->_askSomething('わからなかったよ。もう一度！',$strConversationId,$strWhatAsk);
                 return $this;
             }
 
-            $response = $this->_callChatAPI($strAnswer,$strConversationId,'JOB');
+            $response = $this->_callChatAPI($strAnswer,$strConversationId,$strWhatAsk);
 
-            $this->_afterApiCall($response,$strConversationId,'MONEY','_askMoney','_askJob');
+            $this->_afterApiCall($response,$strConversationId,$strWhatAsk);
 
-
-        });
-    }
-
-    /**
-     * 給与について聞く
-     * @param string $strMessage
-     * @param string $strConversationId
-     */
-    private function _askMoney(string $strMessage,string $strConversationId){
-
-        Log::info("_askMoney");
-
-        $this->ask($strMessage, function(Answer $answer) use ($strConversationId) {
-            $strAnswer = $answer->getText();
-
-            if(empty($strAnswer)){
-                $this->_askMoney('わからなかったよ。もう一度！',$strConversationId);
-                return $this;
-            }
-
-            $response = $this->_callChatAPI($strAnswer,$strConversationId,'MONEY');
-
-            $this->_afterApiCall($response,$strConversationId,'CONFIRM','_askConfirm','_askMoney');
 
         });
     }
 
-    /**
-     * もらった情報の確認
-     * @param string $strMessage
-     * @param string $strConversationId
-     */
-    private function _askConfirm(string $strMessage,string $strConversationId){
-        Log::info("_askConfirm");
-
-        $this->ask($strMessage, function(Answer $answer) use ($strConversationId) {
-
-            $strAnswer = $answer->getText();
-
-            $response = $this->_callChatAPI($strAnswer,$strConversationId,'CONFIRM');
-
-            $this->_afterApiCall($response,$strConversationId,'SEARCH','_askConfirm','_askConfirm');
-
-        });
-    }
+//    /**
+//     * 職種を聞く
+//     * @param string $strMessage
+//     * @param string $strConversationId
+//     */
+//    private function _askJob(string $strMessage,string $strConversationId){
+//
+//        Log::info("_askJob");
+//        Log::info($strMessage);
+//
+//        $this->ask($strMessage, function(Answer $answer) use ($strMessage,$strConversationId) {
+//            $strAnswer = $answer->getText();
+//
+//            Log::info($strAnswer);
+//            Log::info($strConversationId);
+//
+//            if(empty($strAnswer)){
+//                $this->_askJob('わからなかったよ。もう一度！',$strConversationId);
+//                return $this;
+//            }
+//
+//            $response = $this->_callChatAPI($strAnswer,$strConversationId,'JOB');
+//
+//            $this->_afterApiCall($response,$strConversationId,'MONEY','_askMoney','_askJob');
+//
+//
+//        });
+//    }
+//
+//    /**
+//     * 給与について聞く
+//     * @param string $strMessage
+//     * @param string $strConversationId
+//     */
+//    private function _askMoney(string $strMessage,string $strConversationId){
+//
+//        Log::info("_askMoney");
+//
+//        $this->ask($strMessage, function(Answer $answer) use ($strConversationId) {
+//            $strAnswer = $answer->getText();
+//
+//            if(empty($strAnswer)){
+//                $this->_askMoney('わからなかったよ。もう一度！',$strConversationId);
+//                return $this;
+//            }
+//
+//            $response = $this->_callChatAPI($strAnswer,$strConversationId,'MONEY');
+//
+//            $this->_afterApiCall($response,$strConversationId,'CONFIRM','_askConfirm','_askMoney');
+//
+//        });
+//    }
+//
+//    /**
+//     * もらった情報の確認
+//     * @param string $strMessage
+//     * @param string $strConversationId
+//     */
+//    private function _askConfirm(string $strMessage,string $strConversationId){
+//        Log::info("_askConfirm");
+//
+//        $this->ask($strMessage, function(Answer $answer) use ($strConversationId) {
+//
+//            $strAnswer = $answer->getText();
+//
+//            $response = $this->_callChatAPI($strAnswer,$strConversationId,'CONFIRM');
+//
+//            $this->_afterApiCall($response,$strConversationId,'SEARCH','_askConfirm','_askConfirm');
+//
+//        });
+//    }
 
 
     /**
@@ -166,13 +195,13 @@ class ShotSearchConversations extends Conversation
      * @param $method
      * @param null $opsiteMethod
      */
-    private function _afterApiCall(Response $response,String $strConversationId,String $strCheckAsk,$method,$opsiteMethod = null){
+    private function _afterApiCall(Response $response,String $strConversationId){
         if ($this->_checkAnswer($response)){
             // デコード
             $objContent = json_decode($response->getBody(), true);
             Log::info($objContent);
 
-            $this->_nextAction($strConversationId,$objContent,$strCheckAsk,$method,$opsiteMethod);
+            $this->_nextAction($strConversationId,$objContent);
         }
     }
 
@@ -184,21 +213,16 @@ class ShotSearchConversations extends Conversation
      * @param $method
      * @param null $opsiteMethod
      */
-    private function _nextAction(string $strConversationId,array $objContent,string $strCheckAsk,$method,$opsiteMethod = null){
+    private function _nextAction(string $strConversationId,array $objContent){
 
         $strMessage = $objContent['sentence'];
         $strWhatAsk = $objContent['what_ask'];
         if(!empty($strMessage) && !empty($strWhatAsk)){
 
-            if($strWhatAsk == $strCheckAsk){
-                $this->$method($strMessage,$strConversationId);
-            }else{
-                // 確認をする
-                $this->$opsiteMethod('ごめん、よくわからなかったので、もう一度！',$strConversationId);
-            }
+            $this->_askSomething($strMessage,$strConversationId,$strWhatAsk);
 
         }else{
-            $this->$opsiteMethod('ごめん、よくわからなかったので、もう一度！',$strConversationId);
+            $this->_askSomething('ごめん、よくわからなかったので、もう一度！',$strConversationId,$strWhatAsk);
         }
     }
 
