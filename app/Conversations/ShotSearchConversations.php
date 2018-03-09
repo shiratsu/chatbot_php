@@ -52,7 +52,7 @@ class ShotSearchConversations extends Conversation
            return;
         }
 
-        $response = $this->_callChatAPI($this->bot->getMessage()->getText(),$this->_strConversationId,'LOC');
+        $response = $this->_callChatAPI('/shot',$this->bot->getMessage()->getText(),$this->_strConversationId,'LOC');
 
         $this->_afterApiCall($response,$this->_strConversationId);
 
@@ -66,7 +66,7 @@ class ShotSearchConversations extends Conversation
      * @param string|null $strWhatAsk
      * @return Response|null
      */
-    private function _callChatAPI(string $text,string $strConversationId = null,string $strWhatAsk = null) : ?Response
+    private function _callChatAPI(string $strUrl,string $text,string $strConversationId = null,string $strWhatAsk = null) : ?Response
     {
         Log::info("--------------------------_callChatAPI");
         Log::info($text);
@@ -80,7 +80,7 @@ class ShotSearchConversations extends Conversation
         }
         $param = $this->_objHttp->makeParamNER($text,$strWhatAsk,$strConversationId);
 
-        $response = $this->_objHttp->postRequest($param,env('LANGUAGE_ANALYSIS_URL').'/shot');
+        $response = $this->_objHttp->postRequest($param,env('LANGUAGE_ANALYSIS_URL').$strUrl);
 
         return $response;
     }
@@ -106,7 +106,7 @@ class ShotSearchConversations extends Conversation
                 return $this;
             }
 
-            $response = $this->_callChatAPI($strAnswer,$strConversationId,$strWhatAsk);
+            $response = $this->_callChatAPI('/shot',$strAnswer,$strConversationId,$strWhatAsk);
 
             $this->_afterApiCall($response,$strConversationId,$strWhatAsk);
 
